@@ -10,7 +10,7 @@ readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
 authors = [
-    { name = "gbrain contributors", email = "noreply@gbrain.invalid" },
+    {name = "Vladimir Izhmukov"},
 ]
 keywords = ["mcp", "second-brain", "agents", "rag", "pgvector"]
 classifiers = [
