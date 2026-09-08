@@ -142,7 +142,7 @@ journalctl -u gbrain-swarm-worker -f  # tail для verify
 
 ## 4. Receiver: Claude Code через jarvis-channel plugin
 
-[`qwwiwi/dashi-plugin-claude-code`](https://github.com/qwwiwi/dashi-plugin-claude-code) — готовый plugin, который превращает Claude Code сессию в webhook receiver. Содержит:
+[`izmukovvladimir-cyber/dashi-plugin-claude-code`](https://github.com/izmukovvladimir-cyber/dashi-plugin-claude-code) — готовый plugin, который превращает Claude Code сессию в webhook receiver. Содержит:
 
 - HTTP listener на configurable порту (default `:8089`)
 - Bearer auth через `WEBHOOK_TOKEN` env
@@ -153,7 +153,7 @@ journalctl -u gbrain-swarm-worker -f  # tail для verify
 **Setup (TL;DR):**
 
 ```bash
-git clone https://github.com/qwwiwi/dashi-plugin-claude-code.git plugin
+git clone https://github.com/izmukovvladimir-cyber/dashi-plugin-claude-code.git plugin
 cd plugin && npm install
 # Backup current workspace .mcp.json + settings.json
 # Edit channel.env: bot token, webhook port, workspace path
@@ -161,7 +161,7 @@ sudo cp examples/channel-forge.service /etc/systemd/system/  # пример, п�
 sudo systemctl daemon-reload && sudo systemctl enable --now channel-<agent>
 ```
 
-Полный мануал: [docs/02-where-to-place-plugin.md](https://github.com/qwwiwi/dashi-plugin-claude-code/blob/main/docs/02-where-to-place-plugin.md) и [docs/03-installation.md](https://github.com/qwwiwi/dashi-plugin-claude-code/blob/main/docs/03-installation.md) в plugin репо.
+Полный мануал: [docs/02-where-to-place-plugin.md](https://github.com/izmukovvladimir-cyber/dashi-plugin-claude-code/blob/main/docs/02-where-to-place-plugin.md) и [docs/03-installation.md](https://github.com/izmukovvladimir-cyber/dashi-plugin-claude-code/blob/main/docs/03-installation.md) в plugin репо.
 
 ---
 
@@ -410,7 +410,7 @@ Listener должен быть idempotent — если worker делает retry
 ## 10. Cross-references
 
 - Корневой README раздел: [«Триггеры между агентами»](../README.md#триггеры-между-агентами-inter-agent-webhooks)
-- jarvis-channel plugin (Claude Code receiver): [`qwwiwi/dashi-plugin-claude-code`](https://github.com/qwwiwi/dashi-plugin-claude-code)
+- jarvis-channel plugin (Claude Code receiver): [`izmukovvladimir-cyber/dashi-plugin-claude-code`](https://github.com/izmukovvladimir-cyber/dashi-plugin-claude-code)
 - Hermes outgoing HMAC + sidecar proxy: [`docs/hermes-integration.md`](hermes-integration.md)
 - Worker AGENT_GATEWAYS spec: [`docs/hermes-integration.md` §7](hermes-integration.md#7-outbound-hmac-swarm-worker)
 - Reference listener: [`agent-template/scripts/webhook_listener.py`](../agent-template/scripts/webhook_listener.py)

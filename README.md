@@ -190,7 +190,7 @@ outbox запись помечена acked, цикл закрыт
 
 **1. Claude Code через jarvis-channel plugin** — для агентов которые живут в `claude` CLI сессии.
 
-Plugin [`qwwiwi/dashi-plugin-claude-code`](https://github.com/qwwiwi/dashi-plugin-claude-code) поднимает HTTP listener (typically `:8089`), принимает webhook от swarm worker, инжектит payload как сообщение прямо в активную Claude Code сессию. Та обрабатывает как обычный пользовательский ввод, видит tools, отвечает. Deploy: один `npm install` + systemd unit (Linux) или launchd plist (macOS). Reverse SSH tunnel если listener за NAT.
+Plugin [`izmukovvladimir-cyber/dashi-plugin-claude-code`](https://github.com/izmukovvladimir-cyber/dashi-plugin-claude-code) поднимает HTTP listener (typically `:8089`), принимает webhook от swarm worker, инжектит payload как сообщение прямо в активную Claude Code сессию. Та обрабатывает как обычный пользовательский ввод, видит tools, отвечает. Deploy: один `npm install` + systemd unit (Linux) или launchd plist (macOS). Reverse SSH tunnel если listener за NAT.
 
 **2. Hermes Agent через локальный aiohttp listener** — для агентов на [Hermes Agent](https://github.com/NousResearch/hermes-agent) фреймворке.
 
@@ -550,7 +550,7 @@ Apache License 2.0. Полный текст в [LICENSE](LICENSE).
 - **pgvector** — Postgres-расширение для векторов и HNSW-индексов.
 - **Caddy** — TLS reverse proxy.
 - **Hermes Agent** ([NousResearch](https://github.com/NousResearch/hermes-agent)) — фреймворк, под который сделана HMAC-схема и sidecar proxy. Сам Hermes мы не патчим — `gbrain` адаптирован под его публичный контракт.
-- `agent-template/` — порт из [`qwwiwi/public-architecture-claude-code`](https://github.com/qwwiwi/public-architecture-claude-code). Поверх добавлено MCP-подключение к gbrain.
+- `agent-template/` — порт из [`izmukovvladimir-cyber/public-architecture-claude-code`](https://github.com/izmukovvladimir-cyber/public-architecture-claude-code). Поверх добавлено MCP-подключение к gbrain.
 - Структура vault'а (12 пронумерованных scope'ов) вдохновлена PARA, Zettelkasten и проектом Cognee.
 
 Контрибуции, баг-репорты и форки приветствуются. Открывай issue или PR в upstream-репо.
