@@ -172,6 +172,7 @@ if command -v rsync >/dev/null 2>&1; then
     --exclude '*.pyc' \
     --exclude '.env' \
     --exclude 'secrets/' \
+    --exclude 'vault/' \
     "$REPO_ROOT/" "$INSTALL_DIR/"
 else
   cp -a "$REPO_ROOT/." "$INSTALL_DIR/"
