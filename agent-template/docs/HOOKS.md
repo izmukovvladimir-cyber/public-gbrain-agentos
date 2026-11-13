@@ -339,7 +339,7 @@ These hooks form the production memory and safety pipeline for agents running vi
 | review-reminder.sh | PostToolUse | After 10+ edits, reminds code review |
 | activity-logger.sh | PostToolUse | Audit trail (local JSONL) |
 | auto-capture.mjs | Stop | Captures conversation to gbrain |
-| write-handoff.sh | Stop | Generates handoff.md (last 10 entries) |
+| write-handoff.sh | Stop | Keeps handoff.md open items only; "Last 15 actions" go to core/archive/last-actions.md |
 | flush-to-gbrain.sh | PreCompact | Saves HOT+WARM to OV before compaction |
 | compact-notify.sh | PreCompact | Notifies about compaction |
 | close-heartbeat.sh | Stop | Sets agent status offline |
@@ -386,7 +386,7 @@ These hooks form the production memory and safety pipeline for agents running vi
 | Hook | Purpose |
 |------|---------|
 | **auto-capture.mjs** | Captures incremental conversation content to gbrain for semantic indexing. Runs on every response completion — builds the agent's long-term memory automatically. |
-| **write-handoff.sh** | Generates deterministic `handoff.md` from `recent.md` — extracts last 10 entries, active topics, modified files, and pending messages. Next session starts where this one left off. |
+| **write-handoff.sh** | Keeps `handoff.md` to open items only (actions, blockers, pending messages) and moves the auto-generated "Last 15 actions" list to `core/archive/last-actions.md`. Next session starts where this one left off. |
 | **close-heartbeat.sh** | Updates agent status to `offline`. Coordinator uses this to know which agents are available. |
 
 ### Production settings.json

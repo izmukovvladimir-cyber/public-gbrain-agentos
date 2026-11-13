@@ -67,7 +67,7 @@ Rolling 24h journal. Every conversation turn recorded. Loaded every session.
 
 | File | Role | Loads | Writer | Access |
 |------|------|-------|--------|--------|
-| **hot/handoff.md** | Compact extract from recent.md: last 10 conversation entries. Injected at session start for continuity without loading the full journal | always (@include) | **hook** (extracts last 10 from recent.md at session start) | agent reads, hook writes |
+| **hot/handoff.md** | Open items only: actions, blockers, promises. A closed item is deleted and leaves one line in warm/decisions.md. Injected at session start for continuity without loading the full journal | always (@include) | **agent** (adds an open item, deletes it when closed) | agent reads and writes |
 | **hot/recent.md** | Full conversation journal: timestamp, source tag, user snippet (200 chars), agent snippet (200 chars). Emergency trim at 20KB/600 lines | on-demand (Read tool) | **gateway.py** (`append_to_hot_memory()` with fcntl lock), **trim-hot.sh** (cron, compresses old entries) | agent reads, gateway writes, cron trims |
 
 **Entry format:**

@@ -30,7 +30,7 @@ CLAUDE.md                    # SOUL: personality, principles (entry point)
   @core/USER.md              # operator profile
   @core/rules.md             # boundaries, security
   @core/warm/decisions.md    # rolling 14-day memory
-  @core/hot/handoff.md       # compact extract (last 10 entries)
+  @core/hot/handoff.md       # open items only
   # On-demand (Read tool, NOT @include -- saves ~18KB):
   # core/AGENTS.md            # models, subagents, pipelines
   # tools/TOOLS.md            # servers, services, paths

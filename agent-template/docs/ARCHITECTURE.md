@@ -29,7 +29,7 @@ Claude Code launch
     ├── @core/USER.md             operator profile
     ├── @core/rules.md            boundaries
     ├── @core/warm/decisions.md   rolling 14 days
-    └── @core/hot/handoff.md      compact extract (last 10 entries)
+    └── @core/hot/handoff.md      open items only
 
 ~10-25K tokens depending on HOT size
 ```
@@ -98,7 +98,7 @@ MEMORY WRITE (parallel, after every message)
     | B. gbrain: synced via Stop hook + daily cron (NOT per-message)
     |    - Stop hook: runs gbrain-recall-on-start.sh on session end (background)
     |    - Cron: 06:30 UTC daily (after memory rotation scripts)
-    |    - Uploads HOT (last 10 entries) + WARM (full) as markdown
+    |    - Uploads HOT (handoff.md, open items only) + WARM (full) as markdown
     |    - Method: temp_upload -> add_resource to gbrain://notes/
     |    - Idempotent: same date = same URI = overwrites previous
     |
@@ -176,7 +176,7 @@ ${MCP_HOST} (or Tailscale IP — check ss -tlnp | grep 1933)
 │     POST /memory/mcp (create_external_note via JSON-RPC)     → upload markdown
 │     POST /memory/mcp                 → add_resource (indexes + embeds)
 │   Target: gbrain://notes/{agent}-sessions/{YYYY-MM-DD}
-│   Content: last 10 HOT entries + full WARM decisions
+│   Content: HOT open items (handoff.md) + full WARM decisions
 │
 └── Search: when old context needed (>24h)
     POST ${MCP_HOST}/recall/mcp (JSON-RPC tools/call recall)

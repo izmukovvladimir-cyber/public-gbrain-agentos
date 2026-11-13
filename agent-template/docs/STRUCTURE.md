@@ -49,7 +49,7 @@
     │       │   │   └── decisions.md   rolling 14 days
     │       │   ├── hot/
     │       │   │   ├── recent.md      rolling 24 hours (full journal)
-    │       │   │   └── handoff.md    compact extract (last 10 entries, @include)
+    │       │   │   └── handoff.md    open items only (@include)
     │       │   ├── MEMORY.md          COLD archive
     │       │   └── LEARNINGS.md       lessons from mistakes
     │       │

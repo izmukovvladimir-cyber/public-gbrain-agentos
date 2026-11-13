@@ -13,7 +13,7 @@
 │  Always in context, auto-rotate to COLD   │
 ├──────────────────────────────────────────┤
 │  HOT (handoff at startup)                │
-│  core/hot/handoff.md (last 10 entries)    │
+│  core/hot/handoff.md (open items only)    │
 │  In context; recent.md NOT loaded         │
 ├──────────────────────────────────────────┤
 │  COLD (archive, grows)                   │
@@ -253,7 +253,7 @@ A shell script (`gbrain-recall-on-start.sh`) collects HOT + WARM memory and uplo
 
 ```
 1. Health check → gbrain reachable?
-2. Build markdown summary from HOT (last 10 entries) + WARM (full)
+2. Build markdown summary from HOT (handoff.md, open items) + WARM (full)
 3. POST /memory/mcp (create_external_note via JSON-RPC) → upload markdown as temp file
 4. POST /memory/mcp → add_resource with target URI + wait=true
 5. gbrain indexes content, creates embeddings automatically
