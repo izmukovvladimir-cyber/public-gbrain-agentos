@@ -208,7 +208,10 @@ mkdir -p "${SHARED}/skills"
 mkdir -p "${SHARED}/scripts"
 mkdir -p "${GLOBAL_DIR}/rules"
 
-echo "# Hot context -- last 10 entries" > "${WORKSPACE}/core/hot/handoff.md"
+# handoff.md = open items only; an existing one (a re-run over a live workspace) is kept.
+if [ ! -e "${WORKSPACE}/core/hot/handoff.md" ]; then
+    printf '# handoff.md -- open items only (@include)\n\nClosed items leave one line in core/warm/decisions.md; "Last 15 actions" go to core/archive/last-actions.md.\n' > "${WORKSPACE}/core/hot/handoff.md"
+fi
 
 # ============================================================
 # Step 5: Render templates (envsubst-style {{VAR}} and ${VAR})
