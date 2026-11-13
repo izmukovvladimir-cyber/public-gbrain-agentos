@@ -17,7 +17,7 @@ You are an autonomous deployer. You will:
 2. Verify prerequisites and ask the user for every input you cannot guess.
 3. Push the repo to the VPS, run the install script, verify health.
 4. Issue agent tokens, configure the local inbox-agent, set up cron jobs.
-5. **(Path B only)** For each personal agent the user wants, run `agent-template/install.sh`, issue a per-agent token, wire the workspace's `.mcp.json`, set up per-workspace cron jobs.
+5. **(Path B only)** For each personal agent the user wants: an agent that already has a workspace (for example `jarvis` and `coder` created by the Neurootdel installer) is only **connected**: issue a per-agent token and wire its `.mcp.json`; never run `agent-template/install.sh` over an existing workspace. Only a brand-new agent gets `agent-template/install.sh` plus per-workspace cron jobs (see section 7, "Existing workspaces").
 6. Run an end-to-end smoke test that proves a Telegram message lands in the shared brain and is retrievable through recall — and (Path B) that each personal agent workspace opens cleanly and can recall from the brain.
 7. Report a verifiable done-state to the user.
 
@@ -461,6 +461,19 @@ The fault is almost always (a) wrong bearer token in `${INBOX_AGENT_HOME}/.claud
 
 Path B continues from Path A's step 10. **Only run these if the user picked Path B.** Each personal agent the user wants gets its own pass through steps 11–17. Step 18 is optional and per-agent.
 
+**Existing workspaces (connect, do not create).** Before step 12, check each agent's folder `~/.claude-lab/<agent-id>/` and sort it into one of three cases:
+
+1. The folder does not exist: a new agent, run steps 12-17 as written.
+2. `~/.claude-lab/<agent-id>/.claude/CLAUDE.md` exists: the agent is already installed (the Neurootdel installer creates `~/.claude-lab/jarvis/.claude` and `~/.claude-lab/coder/.claude`) and runs as its own service with its own memory rotation. Connect it as described below.
+3. The folder exists but has no `.claude/CLAUDE.md` (a half-finished install, another layout): STOP. Do not run step 12; show the user what is in the folder and wait for their decision.
+
+For an agent in case 2:
+
+- Skip steps 12, 13 and 16. Never run `agent-template/install.sh` over its folder: the workspace, its CLAUDE.md, memory and hooks stay as they are.
+- Step 14: issue its own Bearer token as usual.
+- Step 15: add the gbrain entries to `~/.claude-lab/<agent-id>/.claude/.mcp.json` (create the file if it is missing); keep every other server already listed there, then `chmod 600`.
+- Step 17: do not start a second `claude`; restart the agent the way its installer documents, then ask it in its own chat to list its MCP servers and run the recall check.
+
 ### Step 11: Confirm the agent list
 
 You collected the list in section 5.2 question 10. Re-confirm the final list with the user before any workspace is created. For each agent, you should have on hand:
@@ -474,9 +487,9 @@ You collected the list in section 5.2 question 10. Re-confirm the final list wit
 
 Tell the user how many workspaces you are about to create and the total disk footprint (each workspace is ~5–15 MB before any logs accumulate).
 
-### Step 12: Run `agent-template/install.sh` for each agent
+### Step 12: Run `agent-template/install.sh` for each new agent
 
-For each agent in the list, run:
+For each agent in the list that has no workspace yet (see "Existing workspaces" above), run:
 
 ```bash
 cd ~/public-gbrain-agentos
@@ -700,11 +713,11 @@ The deployment is complete when ALL of these are verifiable. Read each one and c
 
 For each agent in the user's list:
 
-- [ ] Workspace exists: `ls ~/.claude-lab/<agent-id>/.claude/` shows `CLAUDE.md`, `core/`, `hooks/`, `scripts/`, `.mcp.json`.
+- [ ] Workspace exists: `ls ~/.claude-lab/<agent-id>/.claude/` shows `CLAUDE.md`, `core/`, `hooks/`, `scripts/`, `.mcp.json` (an existing workspace that was only connected: `CLAUDE.md` and `.mcp.json`).
 - [ ] `.mcp.json` has all three gbrain entries (memory / recall / swarm), each with that agent's Bearer (not the placeholder, not the inbox-agent token, not another agent's token).
-- [ ] `claude --project ~/.claude-lab/<agent-id>/.claude` opens without errors and reports the role you set.
+- [ ] `claude --project ~/.claude-lab/<agent-id>/.claude` opens without errors and reports the role you set (a connected existing agent: it answers in its own chat after the restart).
 - [ ] From inside that agent, `recall.recent(scope='50-external')` returns results (at minimum, the URL forwarded in Path A step 10).
-- [ ] `crontab -l | grep <agent-id>` shows three rotation entries (trim-hot, rotate-warm, compress-warm).
+- [ ] New agents only: `crontab -l | grep <agent-id>` shows three rotation entries (trim-hot, rotate-warm, compress-warm).
 - [ ] Per-agent token is in `agent_tokens` with the right scopes: `psql -U gbrain -d gbrain -c "SELECT agent, can_write_scopes FROM agent_tokens WHERE agent='<agent-id>' AND revoked_at IS NULL;"`.
 
 Once all are checked, tell the user: "Deployment complete. The brain is running on `<VPS_IP>`, the inbox-agent is running locally, end-to-end capture is verified, and N personal agent workspaces are ready under `~/.claude-lab/`."
